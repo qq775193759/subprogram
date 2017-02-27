@@ -1,6 +1,8 @@
 #include "graph3d.h"
 using namespace std;
 
+//******2d******
+
 void Voxel_2d::print()
 {
 	for(int i=0;i<_data.size();i++)
@@ -12,13 +14,43 @@ void Voxel_2d::print()
 	cout<<endl;
 }
 
-vector<Voxel_2d> Voxel_2d::continuous_2d()
+vector<vector<int> > Voxel_2d::get_data()
 {
-	vector<Voxel_2d> res;
-	
+	return _data;
+}
+
+vector<vector<int> > Voxel_2d::get_empty_data()
+{
+	vector<vector<int> > res = _data;
+	for(int i=0;i<res.size();i++)
+		for(int j=0;j<res[i].size();j++)
+			res[i][j] = 0;
 	return res;
 }
 
+int count_voxel(vector<vector<int> > x)
+{
+	int res = 0;
+	for(int i=0;i<x.size();i++)
+		for(int j=0;j<x[i].size();i++)
+			res += x[i][j];
+	return res;
+}
+
+vector<Voxel_2d> Voxel_2d::continuous_2d()
+{
+	vector<Voxel_2d> res;
+	vector<vector<int> > tmp_data = _data;
+	int voxel_num = count_voxel(tmp_data);
+	while(voxel_num > 0)
+	{
+		vector<vector<int> > tmp_continuous = get_empty_data();
+	}
+	return res;
+}
+
+
+//for Voxel_3d::Voxel_3d(const char* filename)
 vector<int> splitLine(string s)
 {
 	vector<int> res;
@@ -38,6 +70,9 @@ vector<int> splitLine(string s)
 	return res;
 }
 
+//******3d******
+
+//using splitLine(string s)
 Voxel_3d::Voxel_3d(const char* filename)
 {
 	ifstream fin(filename);
