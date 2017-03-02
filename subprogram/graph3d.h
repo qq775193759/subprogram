@@ -18,6 +18,7 @@ public:
 	Voxel_2d(){}
 	Voxel_2d(vector<vector<int> > x) : _data(x){}
 	vector<Voxel_2d> continuous_2d();//to voxel_2d which is continuous
+	int count_overlap(Voxel_2d tar);
 	void print();
 };
 

@@ -1,4 +1,4 @@
-#include "graph3d.h"
+#include "reeb.h"
 using namespace std;
 
 void test_union(int times);
@@ -8,15 +8,7 @@ int main()
 	Voxel_3d bunny_3d("voxel/bunny.txt");
 	vector<Voxel_2d> bunny_2d = bunny_3d.trans_2d();
 	
-	for(int i=0;i<bunny_2d.size();i++)
-	{
-		vector<Voxel_2d> plane = bunny_2d[i].continuous_2d();
-		cout<<plane.size()<<endl;
-		for(int j=0;j<plane.size();j++)
-		{
-			plane[j].print();
-		}
-	}
+	reeb_graph bunny_reeb(bunny_2d);
 
 	int x;cin>>x;
 	return 0;

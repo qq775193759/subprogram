@@ -96,6 +96,21 @@ vector<Voxel_2d> Voxel_2d::continuous_2d()
 	return res;
 }
 
+//for build a reeb tree
+int Voxel_2d::count_overlap(Voxel_2d tar)
+{
+	int res = 0;
+	for(int i=0;i<_data.size();i++)
+		for(int j=0;j<_data[i].size();j++)
+		{
+			if(_data[i][j] == tar._data[i][j])
+				res++;
+		}
+	return res;
+}
+
+
+
 
 //for Voxel_3d::Voxel_3d(const char* filename)
 vector<int> splitLine(string s)
