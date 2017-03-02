@@ -1,4 +1,5 @@
 #include "graph3d.h"
+#include<iomanip>
 using namespace std;
 
 //******2d******
@@ -8,32 +9,77 @@ void Voxel_2d::print()
 	for(int i=0;i<_data.size();i++)
 	{
 		for(int j=0;j<_data[i].size();j++)
-			cout<<_data[i][j]<<" ";
+			cout<<setw(2)<<_data[i][j]<<" ";
 		cout<<endl;
 	}
 	cout<<endl;
 }
 
-vector<vector<int> > Voxel_2d::get_data()
+//for continuous_2d()
+//from 2 to part+1, return part+1
+int union_label_2d(vector<vector<int> > &x)
 {
-	return _data;
-}
-
-vector<vector<int> > Voxel_2d::get_empty_data()
-{
-	vector<vector<int> > res = _data;
-	for(int i=0;i<res.size();i++)
-		for(int j=0;j<res[i].size();j++)
-			res[i][j] = 0;
+	int res = 2;
+	int root_no = 2;
+	vector<int> union_root(2);
+	for(int i=0;i<x.size();i++)
+		for(int j=0;j<x[i].size();j++)
+		{
+			if(x[i][j] == VOXEL_3D_EXIST)
+			{
+				if(j>0 && x[i][j-1]>0)
+				{
+					if(i>0 && x[i-1][j]>0)
+					{
+						int tmp_min = min(union_root[x[i][j-1]], union_root[x[i-1][j]]);
+						union_root[x[i][j-1]] = tmp_min;
+						union_root[x[i-1][j]] = tmp_min;
+						x[i][j] = tmp_min;
+					}
+					else
+					{
+						x[i][j] = union_root[x[i][j-1]];
+					}
+				}
+				else if(i>0 && x[i-1][j]>0)
+				{
+					x[i][j] = union_root[x[i-1][j]];
+				}
+				else
+				{
+					x[i][j] = root_no;
+					union_root.push_back(root_no);
+					root_no ++;
+				}
+			}
+		}
+	for(int i=2;i<union_root.size();i++)
+	{
+		if(union_root[i] == i)
+		{
+			union_root[i] = res;
+			res++;
+		}
+		else
+			union_root[i] = union_root[union_root[i]];
+	}
+	for(int i=0;i<x.size();i++)
+		for(int j=0;j<x[i].size();j++)
+			x[i][j] = union_root[x[i][j]];
 	return res;
 }
 
-int count_voxel(vector<vector<int> > x)
+//for continuous_2d()
+vector<vector<int> > find_label_2d(vector<vector<int> > res, int y)
 {
-	int res = 0;
-	for(int i=0;i<x.size();i++)
-		for(int j=0;j<x[i].size();i++)
-			res += x[i][j];
+	for(int i=0;i<res.size();i++)
+		for(int j=0;j<res[i].size();j++)
+		{
+			if(res[i][j] != y)
+				res[i][j] = VOXEL_3D_VOID;
+			else
+				res[i][j] = VOXEL_3D_EXIST;
+		}
 	return res;
 }
 
@@ -41,10 +87,11 @@ vector<Voxel_2d> Voxel_2d::continuous_2d()
 {
 	vector<Voxel_2d> res;
 	vector<vector<int> > tmp_data = _data;
-	int voxel_num = count_voxel(tmp_data);
-	while(voxel_num > 0)
+	int union_num = union_label_2d(tmp_data);
+	for(int i=2;i<union_num;i++)
 	{
-		vector<vector<int> > tmp_continuous = get_empty_data();
+		Voxel_2d tmp_2d(find_label_2d(tmp_data, i));
+		res.push_back(tmp_2d);
 	}
 	return res;
 }
