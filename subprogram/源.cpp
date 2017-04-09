@@ -5,10 +5,11 @@ void test_union(int times);
 
 int main()
 {
-	Voxel_3d bunny_3d("voxel/bunny.txt");
+	Voxel_3d bunny_3d("voxel/drawer.txt");
 	vector<Voxel_2d> bunny_2d = bunny_3d.trans_2d();
 	
 	reeb_graph bunny_reeb(bunny_2d);
+	bunny_reeb.print();
 
 	int x;cin>>x;
 	return 0;

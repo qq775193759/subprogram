@@ -10,6 +10,8 @@ class reeb_graph
 	vector<vector<int> > node_no;
 	int node_num;
 	vector<pair<int, int> > edge;
+	vector<int> edge_value;
 public:
 	reeb_graph(vector<Voxel_2d> x);
+	void print();
 };

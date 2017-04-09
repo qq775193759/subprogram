@@ -15,6 +15,11 @@ void Voxel_2d::print()
 	cout<<endl;
 }
 
+void Voxel_2d::fix_single()
+{
+	//wait for finishing
+}
+
 //for continuous_2d()
 //from 2 to part+1, return part+1
 int union_label_2d(vector<vector<int> > &x)
@@ -96,6 +101,13 @@ vector<Voxel_2d> Voxel_2d::continuous_2d()
 	return res;
 }
 
+Voxel_2d Voxel_2d::find_circle()
+{
+	Voxel_2d res(_data);
+
+	return res;
+}
+
 //for build a reeb tree
 int Voxel_2d::count_overlap(Voxel_2d tar)
 {
@@ -103,8 +115,20 @@ int Voxel_2d::count_overlap(Voxel_2d tar)
 	for(int i=0;i<_data.size();i++)
 		for(int j=0;j<_data[i].size();j++)
 		{
-			if(_data[i][j] == tar._data[i][j])
+			if((_data[i][j] == 1) && (tar._data[i][j] == 1))
 				res++;
+		}
+	return res;
+}
+
+Voxel_2d Voxel_2d::build_overlap(Voxel_2d tar)
+{
+	Voxel_2d res = tar;
+	for(int i=0;i<_data.size();i++)
+		for(int j=0;j<_data[i].size();j++)
+		{
+			if(_data[i][j] == 0)
+				res._data[i][j]=0;
 		}
 	return res;
 }
