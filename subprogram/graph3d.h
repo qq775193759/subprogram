@@ -27,10 +27,14 @@ public:
 //the same layer
 	void fix_single();//wait for finishing
 	vector<Voxel_2d> continuous_2d();//to voxel_2d which is continuous
+	Voxel_2d find_edge();//find voxel in edge
+	Voxel_2d substract(Voxel_2d x);//return this - x
 	Voxel_2d find_circle();//2345 wsad
 //between 2 layers
 	int count_overlap(Voxel_2d tar);
 	Voxel_2d build_overlap(Voxel_2d tar);
+//other function
+	int count_type(int type);
 };
 
 class Voxel_3d

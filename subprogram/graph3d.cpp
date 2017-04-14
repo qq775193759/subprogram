@@ -101,10 +101,51 @@ vector<Voxel_2d> Voxel_2d::continuous_2d()
 	return res;
 }
 
+Voxel_2d Voxel_2d::find_edge()
+{
+	Voxel_2d res(_data);
+	const int dx[4] = {-1,-1,1,1};
+	const int dy[4] = {-1,1,-1,1};
+	for(int i=1;i<(_data.size()-1);i++)
+		for(int j=1;j<(_data[i].size()-1);j++)
+			if(_data[i][j] == 1)
+			{
+				int co_void = 0, co_exist = 0;
+				for(int k=0;k<4;k++)
+				{
+					if(_data[i+dx[k]][j+dy[k]] == VOXEL_3D_VOID)
+						co_void++;
+					else
+						co_exist++;
+				}
+				if(co_void && co_exist);
+				else
+					res._data[i][j] = VOXEL_3D_VOID;
+			}
+	return res;
+}
+
+Voxel_2d Voxel_2d::substract(Voxel_2d x)
+{
+	Voxel_2d res(_data);
+	for(int i=0;i<_data.size();i++)
+		for(int j=0;j<_data[i].size();j++)
+			if(x._data[i][j] == VOXEL_3D_EXIST)
+				res._data[i][j] = VOXEL_3D_VOID;
+	return res;
+}
+
 Voxel_2d Voxel_2d::find_circle()
 {
 	Voxel_2d res(_data);
-
+	Voxel_2d rest = res;
+	vector<Voxel_2d> edge_vec;
+	while(rest.count_type(VOXEL_3D_EXIST) > 0)
+	{
+		Voxel_2d tmp_edge = rest.find_edge();
+		edge_vec.push_back(tmp_edge);
+		rest = rest.substract(tmp_edge);
+	}
 	return res;
 }
 
@@ -115,7 +156,7 @@ int Voxel_2d::count_overlap(Voxel_2d tar)
 	for(int i=0;i<_data.size();i++)
 		for(int j=0;j<_data[i].size();j++)
 		{
-			if((_data[i][j] == 1) && (tar._data[i][j] == 1))
+			if((_data[i][j] == VOXEL_3D_EXIST) && (tar._data[i][j] == VOXEL_3D_EXIST))
 				res++;
 		}
 	return res;
@@ -129,6 +170,18 @@ Voxel_2d Voxel_2d::build_overlap(Voxel_2d tar)
 		{
 			if(_data[i][j] == 0)
 				res._data[i][j]=0;
+		}
+	return res;
+}
+
+int Voxel_2d::count_type(int type)
+{
+	int res = 0;
+	for(int i=0;i<_data.size();i++)
+		for(int j=0;j<_data[i].size();j++)
+		{
+			if(_data[i][j] == type)
+				res++;
 		}
 	return res;
 }

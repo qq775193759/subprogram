@@ -3,13 +3,26 @@ using namespace std;
 
 void test_union(int times);
 
-int main()
+void main_process(string input_name)
 {
-	Voxel_3d bunny_3d("voxel/drawer.txt");
+	Voxel_3d bunny_3d(input_name.c_str());
 	vector<Voxel_2d> bunny_2d = bunny_3d.trans_2d();
 	
 	reeb_graph bunny_reeb(bunny_2d);
 	bunny_reeb.print();
+	bunny_reeb.find_circle();
+}
+
+int main()
+{
+	ifstream fin("config.txt");
+	string input_name;
+	while(fin>>input_name)
+	{
+		cout<<input_name<<endl;
+		main_process(input_name);
+	}
+	fin.close();
 
 	int x;cin>>x;
 	return 0;

@@ -6,6 +6,7 @@ using namespace std;
 
 class reeb_graph
 {
+	vector<Voxel_2d> plane_vec;
 	vector<vector<Voxel_2d> > node_2d;
 	vector<vector<int> > node_no;
 	int node_num;
@@ -14,4 +15,5 @@ class reeb_graph
 public:
 	reeb_graph(vector<Voxel_2d> x);
 	void print();
+	vector<Voxel_2d> find_circle();
 };

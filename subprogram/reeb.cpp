@@ -3,6 +3,7 @@ using namespace std;
 
 reeb_graph::reeb_graph(vector<Voxel_2d> x)
 {
+	plane_vec = x;
 	node_num = 0;
 	//node_2d & node_no
 	for(int i=0;i<x.size();i++)
@@ -50,4 +51,14 @@ void reeb_graph::print()
 	{
 		cout<<edge[i].first<<" "<<edge[i].second<<" "<<edge_value[i]<<endl;
 	}
+}
+
+vector<Voxel_2d> reeb_graph::find_circle()
+{
+	for(int i=0;i<node_2d.size();i++)
+		for(int j=0;j<node_2d[i].size();j++)
+		{
+			node_2d[i][j].find_circle();
+		}
+	return plane_vec;
 }
