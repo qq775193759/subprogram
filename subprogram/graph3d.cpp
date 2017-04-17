@@ -1,15 +1,19 @@
 #include "graph3d.h"
 #include<iomanip>
+#include<queue>
 using namespace std;
 
 //******2d******
+
+const int VOXEL_2D_PRINT_OFFSET = 1;
+const char VOXEL_2D_PRINT_CHAR[10] = {'X', '0', '*','A','V','<','>','U','D'};
 
 void Voxel_2d::print()
 {
 	for(int i=0;i<_data.size();i++)
 	{
 		for(int j=0;j<_data[i].size();j++)
-			cout<<setw(2)<<_data[i][j]<<" ";
+			cout<<setw(1)<<VOXEL_2D_PRINT_CHAR[_data[i][j] + VOXEL_2D_PRINT_OFFSET]<<" ";
 		cout<<endl;
 	}
 	cout<<endl;
@@ -101,24 +105,55 @@ vector<Voxel_2d> Voxel_2d::continuous_2d()
 	return res;
 }
 
+Voxel_2d Voxel_2d::make_edge()
+{
+	Voxel_2d res(_data);
+	const int dx[4] = {-1,0,0,1};
+	const int dy[4] = {0,-1,1,0};
+	queue<int> x_queue;
+	queue<int> y_queue;
+	x_queue.push(0);
+	y_queue.push(0);
+	while(x_queue.empty() == 0)
+	{
+		int tmp_x = x_queue.front();x_queue.pop();
+		int tmp_y = y_queue.front();y_queue.pop();
+		for(int i=0;i<4;i++)
+		{
+			int x_plus = tmp_x + dx[i];
+			int y_plus = tmp_y + dy[i];
+			if(x_plus < 0 || x_plus >= _data.size()) continue;
+			if(y_plus < 0 || y_plus >= _data[0].size()) continue;
+			if(res._data[x_plus][y_plus] == VOXEL_3D_VOID) 
+			{
+				res._data[x_plus][y_plus] = VOXEL_3D_EDGE;
+				x_queue.push(x_plus);
+				y_queue.push(y_plus);
+			}
+		}
+	}
+	return res;
+}
+
 Voxel_2d Voxel_2d::find_edge()
 {
 	Voxel_2d res(_data);
-	const int dx[4] = {-1,-1,1,1};
-	const int dy[4] = {-1,1,-1,1};
+	Voxel_2d edge_mask = this->make_edge();
+	const int dx[8] = {-1,-1,-1,0,0,1,1,1};
+	const int dy[8] = {-1,0,1,-1,1,-1,0,1};
 	for(int i=1;i<(_data.size()-1);i++)
 		for(int j=1;j<(_data[i].size()-1);j++)
 			if(_data[i][j] == 1)
 			{
-				int co_void = 0, co_exist = 0;
-				for(int k=0;k<4;k++)
+				int co_edge = 0, co_exist = 0;
+				for(int k=0;k<8;k++)
 				{
-					if(_data[i+dx[k]][j+dy[k]] == VOXEL_3D_VOID)
-						co_void++;
-					else
+					if(edge_mask._data[i+dx[k]][j+dy[k]] == VOXEL_3D_EDGE)
+						co_edge++;
+					else if(edge_mask._data[i+dx[k]][j+dy[k]] == VOXEL_3D_EXIST)
 						co_exist++;
 				}
-				if(co_void && co_exist);
+				if(co_edge && co_exist);
 				else
 					res._data[i][j] = VOXEL_3D_VOID;
 			}
@@ -130,8 +165,27 @@ Voxel_2d Voxel_2d::substract(Voxel_2d x)
 	Voxel_2d res(_data);
 	for(int i=0;i<_data.size();i++)
 		for(int j=0;j<_data[i].size();j++)
-			if(x._data[i][j] == VOXEL_3D_EXIST)
+			if(x._data[i][j] >= VOXEL_3D_EXIST)
 				res._data[i][j] = VOXEL_3D_VOID;
+	return res;
+}
+
+Voxel_2d Voxel_2d::find_circle_from_edge()
+{
+	Voxel_2d res(_data);
+	const int dx[4] = {-1,0,0,1};
+	const int dy[4] = {0,-1,1,0};
+	int exist_num = 0;
+	int current_x = 0, current_y = 0;
+	for(int i=0;i<_data.size();i++)
+		for(int j=0;j<_data[i].size();j++)
+			if(_data[i][j] == VOXEL_3D_EXIST)
+			{
+				exist_num++;
+				current_x = i;
+				current_y = j;
+			}
+
 	return res;
 }
 
@@ -139,13 +193,27 @@ Voxel_2d Voxel_2d::find_circle()
 {
 	Voxel_2d res(_data);
 	Voxel_2d rest = res;
-	vector<Voxel_2d> edge_vec;
+	vector<Voxel_2d> edge_circle_vec;
 	while(rest.count_type(VOXEL_3D_EXIST) > 0)
 	{
 		Voxel_2d tmp_edge = rest.find_edge();
-		edge_vec.push_back(tmp_edge);
+		edge_circle_vec.push_back(tmp_edge.find_circle_from_edge());
 		rest = rest.substract(tmp_edge);
 	}
+	return res;
+}
+
+vector<neighbor_int4> Voxel_2d::find_neighbor(Voxel_2d tar)
+{
+	vector<neighbor_int4> res;
+	const int dx[4] = {-1,0,0,1};
+	const int dy[4] = {0,-1,1,0};
+	for(int i=0;i<_data.size();i++)
+		for(int j=0;j<_data[i].size();j++)
+			if(_data[i][j] >= VOXEL_3D_EXIST)
+				for(int k=0;k<4;k++)
+					if(tar._data[i+dx[k]][j+dy[k]] >= VOXEL_3D_EXIST)
+						res.push_back(neighbor_int4(i,j,i+dx[k],j+dy[k]));
 	return res;
 }
 
@@ -156,7 +224,7 @@ int Voxel_2d::count_overlap(Voxel_2d tar)
 	for(int i=0;i<_data.size();i++)
 		for(int j=0;j<_data[i].size();j++)
 		{
-			if((_data[i][j] == VOXEL_3D_EXIST) && (tar._data[i][j] == VOXEL_3D_EXIST))
+			if((_data[i][j] >= VOXEL_3D_EXIST) && (tar._data[i][j] >= VOXEL_3D_EXIST))
 				res++;
 		}
 	return res;
@@ -168,8 +236,8 @@ Voxel_2d Voxel_2d::build_overlap(Voxel_2d tar)
 	for(int i=0;i<_data.size();i++)
 		for(int j=0;j<_data[i].size();j++)
 		{
-			if(_data[i][j] == 0)
-				res._data[i][j]=0;
+			if(_data[i][j] == VOXEL_3D_VOID)
+				res._data[i][j] = VOXEL_3D_VOID;
 		}
 	return res;
 }

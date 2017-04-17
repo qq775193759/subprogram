@@ -11,6 +11,7 @@ void main_process(string input_name)
 	reeb_graph bunny_reeb(bunny_2d);
 	bunny_reeb.print();
 	bunny_reeb.find_circle();
+	cout<<"finish finding circle"<<endl; 
 }
 
 int main()
