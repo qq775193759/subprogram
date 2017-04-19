@@ -55,10 +55,14 @@ void reeb_graph::print()
 
 vector<Voxel_2d> reeb_graph::find_circle()
 {
+	int cw = 1;
 	for(int i=0;i<node_2d.size();i++)
+	{
 		for(int j=0;j<node_2d[i].size();j++)
 		{
-			node_2d[i][j].find_circle();
+			node_2d[i][j].find_circle(cw);
 		}
+		cw = 4 - cw;
+	}
 	return plane_vec;
 }

@@ -6,7 +6,7 @@ using namespace std;
 //******2d******
 
 const int VOXEL_2D_PRINT_OFFSET = 1;
-const char VOXEL_2D_PRINT_CHAR[10] = {'X', '0', '*','A','V','<','>','U','D'};
+const char VOXEL_2D_PRINT_CHAR[10] = {'X', '0', '*','V','>','A','<','U','D'};
 
 void Voxel_2d::print()
 {
@@ -17,6 +17,34 @@ void Voxel_2d::print()
 		cout<<endl;
 	}
 	cout<<endl;
+}
+
+void Voxel_2d::check_circle()
+{
+	const int dx[4] = {1,0,-1,0};
+	const int dy[4] = {0,1,0,-1};
+	int current_x = 0, current_y = 0;
+	int exist_num = 0;
+	for(int i=0;i<_data.size();i++)
+		for(int j=0;j<_data[i].size();j++)
+			if(_data[i][j] == VOXEL_3D_EXIST)
+			{
+				exist_num++;
+				current_x = i;
+				current_y = j;
+			}
+	int st_x = current_x;
+	int st_y = current_y;
+	while(exist_num)
+	{
+		exist_num--;
+		current_x = current_x + dx[_data[current_x-2][current_y-2]];
+		current_y = current_y + dy[_data[current_x-2][current_y-2]];
+	}
+	if(current_x == st_x)
+		cout<<"check OK"<<endl;
+	else
+		cout<<"error"<<endl;
 }
 
 void Voxel_2d::fix_single()
@@ -170,12 +198,13 @@ Voxel_2d Voxel_2d::substract(Voxel_2d x)
 	return res;
 }
 
-Voxel_2d Voxel_2d::find_circle_from_edge()
+Voxel_2d Voxel_2d::find_circle_from_edge(int cw)
 {
 	Voxel_2d res(_data);
-	const int dx[4] = {-1,0,0,1};
-	const int dy[4] = {0,-1,1,0};
+	const int dx[4] = {1,0,-1,0};
+	const int dy[4] = {0,1,0,-1};
 	int exist_num = 0;
+	int direction = 0;
 	int current_x = 0, current_y = 0;
 	for(int i=0;i<_data.size();i++)
 		for(int j=0;j<_data[i].size();j++)
@@ -185,35 +214,96 @@ Voxel_2d Voxel_2d::find_circle_from_edge()
 				current_x = i;
 				current_y = j;
 			}
+	while(exist_num)
+	{
+		exist_num--;
+		//cout<<exist_num<<endl;
+		for(int i=0;i<3;i++)
+		{
+			direction = (direction+cw)%4;
+			if(res._data[current_x + dx[direction]][current_y + dy[direction]] == VOXEL_3D_EXIST)
+			{
+				current_x = current_x + dx[direction];
+				current_y = current_y + dy[direction];
+				direction = (direction+2)%4;//rotate 180 
+				res._data[current_x][current_y] = direction + 2;//write back
+				break;
+			}
+		}
+	}
 
 	return res;
 }
 
-Voxel_2d Voxel_2d::find_circle()
+void Voxel_2d::add_circle(Voxel_2d tar)
+{
+	for(int i=0;i<_data.size();i++)
+		for(int j=0;j<_data[i].size();j++)
+			if(tar._data[i][j] >= VOXEL_3D_EXIST)
+				_data[i][j] = tar._data[i][j];
+}
+
+Voxel_2d Voxel_2d::find_circle(int init_cw)
 {
 	Voxel_2d res(_data);
 	Voxel_2d rest = res;
 	vector<Voxel_2d> edge_circle_vec;
+	//split circle
+	int cw = init_cw;
 	while(rest.count_type(VOXEL_3D_EXIST) > 0)
 	{
 		Voxel_2d tmp_edge = rest.find_edge();
-		edge_circle_vec.push_back(tmp_edge.find_circle_from_edge());
+		edge_circle_vec.push_back(tmp_edge.find_circle_from_edge(cw));
+		cw = 4 - cw;
 		rest = rest.substract(tmp_edge);
 	}
+	//merge circle
+	res.add_circle(edge_circle_vec[0]);
+	cw = init_cw;
+	for(int i=1;i<edge_circle_vec.size();i++)
+	{
+		vector<neighbor_point4> tmp_neighbor_vec = res.find_neighbor(edge_circle_vec[i], cw);
+		//cout<<tmp_neighbor_vec.size()<<endl;
+		cw = 4 - cw;
+		res.add_circle(edge_circle_vec[i]);
+		neighbor_point4 tmp_neighbor = tmp_neighbor_vec[0];
+		res._data[tmp_neighbor.sx][tmp_neighbor.sy] = tmp_neighbor.sd;
+		res._data[tmp_neighbor.tx][tmp_neighbor.ty] = tmp_neighbor.td;
+	}
+	//res.print();
+	res.check_circle();
 	return res;
 }
 
-vector<neighbor_int4> Voxel_2d::find_neighbor(Voxel_2d tar)
+vector<neighbor_point4> Voxel_2d::find_neighbor(Voxel_2d tar, int cw)
 {
-	vector<neighbor_int4> res;
-	const int dx[4] = {-1,0,0,1};
-	const int dy[4] = {0,-1,1,0};
+	vector<neighbor_point4> res;
+	const int dx[4] = {1,-1,-1,1};
+	const int dy[4] = {1,1,-1,-1};
+	const int voxel_type[4] = {4,5,2,3};
+	const int sd_type[4] = {3,4,5,2};
+	const int td_type[4] = {5,2,3,4};
 	for(int i=0;i<_data.size();i++)
 		for(int j=0;j<_data[i].size();j++)
-			if(_data[i][j] >= VOXEL_3D_EXIST)
-				for(int k=0;k<4;k++)
-					if(tar._data[i+dx[k]][j+dy[k]] >= VOXEL_3D_EXIST)
-						res.push_back(neighbor_int4(i,j,i+dx[k],j+dy[k]));
+			if(_data[i][j] > VOXEL_3D_EXIST)
+			{
+				int type_rank = _data[i][j]-2;
+				int direct_rank = (type_rank + cw + 1)%4;
+				int data_rank = _data[i][j]-2;
+				if(cw == 1)
+					data_rank = (data_rank+3)%4;
+				if(tar._data[i+dx[data_rank]][j+dy[data_rank]] == voxel_type[type_rank])
+				{
+					neighbor_point4 tmp_point4;
+					tmp_point4.sx = i;
+					tmp_point4.sy = j;
+					tmp_point4.sd = sd_type[direct_rank];
+					tmp_point4.tx = i+dx[data_rank];
+					tmp_point4.ty = j+dy[data_rank];
+					tmp_point4.td = td_type[direct_rank];
+					res.push_back(tmp_point4);
+				}
+			}
 	return res;
 }
 
