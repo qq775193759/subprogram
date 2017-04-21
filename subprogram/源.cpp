@@ -18,10 +18,13 @@ int main()
 {
 	ifstream fin("config.txt");
 	string input_name;
+	int input_cal;
 	while(fin>>input_name)
 	{
-		cout<<input_name<<endl;
-		main_process(input_name);
+		fin>>input_cal;
+		cout<<input_name<<"  "<<input_cal<<endl;
+		if(input_cal)
+			main_process(input_name);
 	}
 	fin.close();
 

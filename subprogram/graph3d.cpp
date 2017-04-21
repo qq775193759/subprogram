@@ -21,6 +21,7 @@ void Voxel_2d::print()
 
 void Voxel_2d::check_circle()
 {
+	cout<<"check st  ";
 	const int dx[4] = {1,0,-1,0};
 	const int dy[4] = {0,1,0,-1};
 	int current_x = 0, current_y = 0;
@@ -38,13 +39,18 @@ void Voxel_2d::check_circle()
 	while(exist_num)
 	{
 		exist_num--;
-		current_x = current_x + dx[_data[current_x-2][current_y-2]];
-		current_y = current_y + dy[_data[current_x-2][current_y-2]];
+		if(_data[current_x][current_y] <= VOXEL_3D_EXIST)
+		{
+			cout<<"check break error"<<endl;
+			return;
+		}
+		current_x = current_x + dx[_data[current_x][current_y]-2];
+		current_y = current_y + dy[_data[current_x][current_y]-2];
 	}
 	if(current_x == st_x)
 		cout<<"check OK"<<endl;
 	else
-		cout<<"error"<<endl;
+		cout<<"check error"<<endl;
 }
 
 void Voxel_2d::fix_single()
@@ -263,12 +269,21 @@ Voxel_2d Voxel_2d::find_circle(int init_cw)
 	for(int i=1;i<edge_circle_vec.size();i++)
 	{
 		vector<neighbor_point4> tmp_neighbor_vec = res.find_neighbor(edge_circle_vec[i], cw);
-		//cout<<tmp_neighbor_vec.size()<<endl;
+		cout<<tmp_neighbor_vec.size()<<endl;
 		cw = 4 - cw;
+		{
+			//res.print();
+			//edge_circle_vec[i].print();
+		}
 		res.add_circle(edge_circle_vec[i]);
-		neighbor_point4 tmp_neighbor = tmp_neighbor_vec[0];
-		res._data[tmp_neighbor.sx][tmp_neighbor.sy] = tmp_neighbor.sd;
-		res._data[tmp_neighbor.tx][tmp_neighbor.ty] = tmp_neighbor.td;
+		if(tmp_neighbor_vec.size() > 0)
+		{
+			neighbor_point4 tmp_neighbor = tmp_neighbor_vec[0];
+			res._data[tmp_neighbor.sx][tmp_neighbor.sy] = tmp_neighbor.sd;
+			res._data[tmp_neighbor.tx][tmp_neighbor.ty] = tmp_neighbor.td;
+		}
+		else
+			cout<<"there is no overlap!!!"<<endl;
 	}
 	//res.print();
 	res.check_circle();
