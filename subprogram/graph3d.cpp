@@ -179,15 +179,13 @@ Voxel_2d Voxel_2d::find_edge()
 		for(int j=1;j<(_data[i].size()-1);j++)
 			if(_data[i][j] == 1)
 			{
-				int co_edge = 0, co_exist = 0;
+				int co_edge = 0;
 				for(int k=0;k<8;k++)
 				{
 					if(edge_mask._data[i+dx[k]][j+dy[k]] == VOXEL_3D_EDGE)
 						co_edge++;
-					else if(edge_mask._data[i+dx[k]][j+dy[k]] == VOXEL_3D_EXIST)
-						co_exist++;
 				}
-				if(co_edge && co_exist);
+				if(co_edge);
 				else
 					res._data[i][j] = VOXEL_3D_VOID;
 			}
@@ -201,6 +199,53 @@ Voxel_2d Voxel_2d::substract(Voxel_2d x)
 		for(int j=0;j<_data[i].size();j++)
 			if(x._data[i][j] >= VOXEL_3D_EXIST)
 				res._data[i][j] = VOXEL_3D_VOID;
+	return res;
+}
+
+vector<Voxel_2d> Voxel_2d::fix_odd_from_edge()
+{
+	vector<Voxel_2d> res;
+	Voxel_2d rest(_data);
+	Voxel_2d count = rest.substract(rest);
+	const int dx[4] = {1,-1,0,0};
+	const int dy[4] = {0,0,1,-1};
+	//count the degree of voxel
+	for(int i=1;i<(_data.size()-1);i++)
+		for(int j=1;j<(_data[i].size()-1);j++)
+			if(_data[i][j] >= VOXEL_3D_EXIST)
+				for(int k=0;k<4;k++)
+					if(_data[i+dx[k]][j+dy[k]] >= VOXEL_3D_EXIST)
+						count._data[i][j]++;
+	//delete voxel
+	queue<int> x_queue;
+	queue<int> y_queue;
+	for(int i=1;i<(_data.size()-1);i++)
+		for(int j=1;j<(_data[i].size()-1);j++)
+			if(_data[i][j] >= VOXEL_3D_EXIST)
+				if(count._data[i][j] <= 1)
+				{
+					x_queue.push(i);
+					y_queue.push(j);
+					rest._data[i][j] = VOXEL_3D_VOID;
+				}
+	while(x_queue.size()>0)
+	{
+		int i = x_queue.front();x_queue.pop();
+		int j = y_queue.front();y_queue.pop();
+		for(int k=0;k<4;k++)
+			if(rest._data[i+dx[k]][j+dy[k]] >= VOXEL_3D_EXIST)
+			{
+				count._data[i+dx[k]][j+dy[k]]--;
+				if(count._data[i+dx[k]][j+dy[k]] == 1)
+				{
+					x_queue.push(i+dx[k]);
+					y_queue.push(j+dy[k]);
+					rest._data[i+dx[k]][j+dy[k]] = VOXEL_3D_VOID;
+				}
+			}
+	}
+	if(rest.count_type(VOXEL_3D_EXIST) > 0)
+		res.push_back(rest);
 	return res;
 }
 
@@ -259,11 +304,14 @@ Voxel_2d Voxel_2d::find_circle(int init_cw)
 	while(rest.count_type(VOXEL_3D_EXIST) > 0)
 	{
 		Voxel_2d tmp_edge = rest.find_edge();
-		edge_circle_vec.push_back(tmp_edge.find_circle_from_edge(cw));
+		vector<Voxel_2d> circle_and_patch = tmp_edge.fix_odd_from_edge();
+		for(int i=0;i<circle_and_patch.size();i++)
+			edge_circle_vec.push_back(circle_and_patch[i].find_circle_from_edge(cw));
 		cw = 4 - cw;
 		rest = rest.substract(tmp_edge);
 	}
 	//merge circle
+	res = res.substract(res);
 	res.add_circle(edge_circle_vec[0]);
 	cw = init_cw;
 	for(int i=1;i<edge_circle_vec.size();i++)
@@ -283,7 +331,10 @@ Voxel_2d Voxel_2d::find_circle(int init_cw)
 			res._data[tmp_neighbor.tx][tmp_neighbor.ty] = tmp_neighbor.td;
 		}
 		else
+		{
 			cout<<"there is no overlap!!!"<<endl;
+			int x;cin>>x;
+		}
 	}
 	//res.print();
 	res.check_circle();

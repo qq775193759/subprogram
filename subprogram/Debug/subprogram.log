@@ -1,4 +1,4 @@
-﻿生成启动时间为 2017/4/21 10:23:37。
+﻿生成启动时间为 2017/4/26 15:08:40。
      1>项目“C:\Users\yezp\Documents\Visual Studio 2012\Projects\subprogram\subprogram\subprogram.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt graph3d.cpp
@@ -18,22 +18,27 @@
      1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(160): warning C4018: “>=”: 有符号/无符号不匹配
      1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(178): warning C4018: “<”: 有符号/无符号不匹配
      1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(179): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(200): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(201): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(215): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(216): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(246): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(247): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(269): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(301): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(302): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(329): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(330): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(341): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(342): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(198): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(199): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(213): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(214): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(222): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(223): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(260): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(261): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(291): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(292): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(308): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(317): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(352): warning C4018: “<”: 有符号/无符号不匹配
      1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(353): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(354): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(370): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(380): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(381): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(392): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(393): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(404): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(405): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp\documents\visual studio 2012\projects\subprogram\subprogram\graph3d.cpp(421): warning C4018: “<”: 有符号/无符号不匹配
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\yezp\Documents\Visual Studio 2012\Projects\subprogram\Debug\subprogram.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\yezp\Documents\Visual Studio 2012\Projects\subprogram\Debug\subprogram.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\yezp\Documents\Visual Studio 2012\Projects\subprogram\Debug\subprogram.lib" /MACHINE:X86 Debug\subprogram.res
          Debug\graph3d.obj
@@ -44,4 +49,4 @@
 
 生成成功。
 
-已用时间 00:00:01.81
+已用时间 00:00:01.82

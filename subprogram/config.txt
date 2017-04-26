@@ -1,6 +1,6 @@
 voxel/bunny_y.txt 1
-voxel/chair_y.txt 0
-voxel/cup_x.txt 0
-voxel/eight_x.txt 0
-voxel/table_z.txt 0
+voxel/chair_y.txt 1
+voxel/cup_x.txt 1
+voxel/eight_x.txt 1
+voxel/table_z.txt 1
 voxel/teddy_y.txt 1

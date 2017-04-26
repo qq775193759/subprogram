@@ -44,6 +44,7 @@ public:
 //find circle
 	Voxel_2d make_edge();//
 	Voxel_2d find_edge();//find voxel in edge
+	vector<Voxel_2d> fix_odd_from_edge();//delete odd point from edge
 	Voxel_2d find_circle_from_edge(int cw);
 	void add_circle(Voxel_2d tar);//!!!!!!!!!!!!!!!!!!chang data!!!!!!!!!!
 	Voxel_2d find_circle(int init_cw);//2345 wsad
