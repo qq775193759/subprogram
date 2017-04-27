@@ -10,7 +10,9 @@ class reeb_graph
 	vector<vector<Voxel_2d> > node_2d;
 	vector<vector<int> > node_no;
 	int node_num;
+	vector<Voxel_2d> circle_vec;//rank is node
 	vector<pair<int, int> > edge;
+	vector<int> edge_mask;
 	vector<int> edge_value;
 public:
 	reeb_graph(vector<Voxel_2d> x);

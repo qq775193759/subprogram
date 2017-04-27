@@ -53,6 +53,7 @@ public:
 //between 2 layers
 	int count_overlap(Voxel_2d tar);
 	Voxel_2d build_overlap(Voxel_2d tar);
+	vector<neighbor_point4> find_layer_connection(Voxel_2d& tar);
 	Voxel_2d substract(Voxel_2d x);//return this - x
 //other function
 	int count_type(int type);

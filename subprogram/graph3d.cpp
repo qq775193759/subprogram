@@ -398,6 +398,33 @@ Voxel_2d Voxel_2d::build_overlap(Voxel_2d tar)
 	return res;
 }
 
+vector<neighbor_point4> Voxel_2d::find_layer_connection(Voxel_2d& tar)
+{
+	vector<neighbor_point4> res;
+	const int dx[4] = {1,0,-1,0};
+	const int dy[4] = {0,1,0,-1};
+	const int voxel_type[4] = {4,5,2,3};
+	for(int i=0;i<_data.size();i++)
+		for(int j=0;j<_data[i].size();j++)
+			if((_data[i][j] > VOXEL_3D_EXIST) && (_data[i][j] < VOXEL_3D_UP))
+			{
+				neighbor_point4 tmp_point4;
+				if(tar._data[i][j] == _data[i][j])
+				{
+					res.push_back(tmp_point4);
+				}
+				else 
+				{
+					int tmp_rank = _data[i][j]-2;
+					if(tar._data[i+dx[tmp_rank]][j+dy[tmp_rank]] == voxel_type[tmp_rank])
+					{
+						res.push_back(tmp_point4);
+					}
+				}
+			}
+	return res;
+}
+
 int Voxel_2d::count_type(int type)
 {
 	int res = 0;
@@ -458,9 +485,9 @@ Voxel_3d::Voxel_3d(const char* filename)
 	size_x = _data.size();
 	size_y = _data[0].size();
 	size_z = _data[0][0].size();
-	cout<<size_x<<endl;
-	cout<<size_y<<endl;
-	cout<<size_z<<endl;
+	cout<<"x size: "<<size_x<<endl;
+	cout<<"y size: "<<size_y<<endl;
+	cout<<"z size: "<<size_z<<endl;
 }
 
 vector<Voxel_2d> Voxel_3d::trans_2d()
