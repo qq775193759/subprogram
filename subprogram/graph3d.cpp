@@ -28,7 +28,7 @@ void Voxel_2d::check_circle()
 	int exist_num = 0;
 	for(int i=0;i<_data.size();i++)
 		for(int j=0;j<_data[i].size();j++)
-			if(_data[i][j] == VOXEL_3D_EXIST)
+			if(_data[i][j] > VOXEL_3D_EXIST)
 			{
 				exist_num++;
 				current_x = i;
@@ -44,13 +44,20 @@ void Voxel_2d::check_circle()
 			cout<<"check break error"<<endl;
 			return;
 		}
-		current_x = current_x + dx[_data[current_x][current_y]-2];
-		current_y = current_y + dy[_data[current_x][current_y]-2];
+		int next_x = current_x + dx[_data[current_x][current_y]-2];
+		int next_y = current_y + dy[_data[current_x][current_y]-2];
+		current_x = next_x;
+		current_y = next_y;
 	}
-	if(current_x == st_x)
+	if((current_x == st_x) &&(current_y == st_y))
 		cout<<"check OK"<<endl;
 	else
+	{
 		cout<<"check error"<<endl;
+		cout<<current_x<<"  "<<st_x<<endl;
+		this->print();
+		int x;cin>>x;
+	}
 }
 
 void Voxel_2d::fix_single()
@@ -317,7 +324,7 @@ Voxel_2d Voxel_2d::find_circle(int init_cw)
 	for(int i=1;i<edge_circle_vec.size();i++)
 	{
 		vector<neighbor_point4> tmp_neighbor_vec = res.find_neighbor(edge_circle_vec[i], cw);
-		cout<<tmp_neighbor_vec.size()<<endl;
+		//cout<<tmp_neighbor_vec.size()<<endl;
 		cw = 4 - cw;
 		{
 			//res.print();
@@ -337,7 +344,7 @@ Voxel_2d Voxel_2d::find_circle(int init_cw)
 		}
 	}
 	//res.print();
-	res.check_circle();
+	//res.check_circle();
 	return res;
 }
 
@@ -398,7 +405,7 @@ Voxel_2d Voxel_2d::build_overlap(Voxel_2d tar)
 	return res;
 }
 
-vector<neighbor_point4> Voxel_2d::find_layer_connection(Voxel_2d& tar)
+vector<neighbor_point4> Voxel_2d::find_layer_connection(Voxel_2d tar)
 {
 	vector<neighbor_point4> res;
 	const int dx[4] = {1,0,-1,0};
@@ -409,20 +416,25 @@ vector<neighbor_point4> Voxel_2d::find_layer_connection(Voxel_2d& tar)
 			if((_data[i][j] > VOXEL_3D_EXIST) && (_data[i][j] < VOXEL_3D_UP))
 			{
 				neighbor_point4 tmp_point4;
-				if(tar._data[i][j] == _data[i][j])
+				int tmp_rank = _data[i][j]-2;
+				if(tar._data[i+dx[tmp_rank]][j+dy[tmp_rank]] == voxel_type[tmp_rank])
 				{
+					tmp_point4.sx = i;
+					tmp_point4.sy = j;
+					tmp_point4.sd = VOXEL_3D_DOWN;
+					tmp_point4.tx = i+dx[tmp_rank];
+					tmp_point4.ty = j+dy[tmp_rank];
+					tmp_point4.td = VOXEL_3D_UP;
 					res.push_back(tmp_point4);
-				}
-				else 
-				{
-					int tmp_rank = _data[i][j]-2;
-					if(tar._data[i+dx[tmp_rank]][j+dy[tmp_rank]] == voxel_type[tmp_rank])
-					{
-						res.push_back(tmp_point4);
-					}
 				}
 			}
 	return res;
+}
+
+void Voxel_2d::add_up_and_down(Voxel_2d& tar, neighbor_point4 nbor)//!!!!!!!!!!!!!!!!!!chang data!!!!!!!!!!
+{
+	_data[nbor.sx][nbor.sy] = nbor.sd;
+	tar._data[nbor.tx][nbor.ty] = nbor.td;
 }
 
 int Voxel_2d::count_type(int type)
@@ -434,6 +446,36 @@ int Voxel_2d::count_type(int type)
 			if(_data[i][j] == type)
 				res++;
 		}
+	return res;
+}
+
+Voxel_2d Voxel_2d::circle_reverse()
+{
+	Voxel_2d res(_data);
+	const int dx[4] = {1,0,-1,0};
+	const int dy[4] = {0,1,0,-1};
+	const int voxel_type[4] = {4,5,2,3};
+	int current_x = 0, current_y = 0;
+	int exist_num = 0;
+	for(int i=0;i<_data.size();i++)
+		for(int j=0;j<_data[i].size();j++)
+			if(_data[i][j] >= VOXEL_3D_EXIST)
+			{
+				exist_num++;
+				current_x = i;
+				current_y = j;
+			}
+	int st_x = current_x;
+	int st_y = current_y;
+	while(exist_num)
+	{
+		exist_num--;
+		int next_x = current_x + dx[_data[current_x][current_y]-2];
+		int next_y = current_y + dy[_data[current_x][current_y]-2];
+		res._data[next_x][next_y] = voxel_type[_data[current_x][current_y]-2];
+		current_x = next_x;
+		current_y = next_y;
+	}
 	return res;
 }
 

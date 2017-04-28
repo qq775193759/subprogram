@@ -75,6 +75,7 @@ void reeb_graph::print()
 
 vector<Voxel_2d> reeb_graph::find_circle()
 {
+	//find circle for node
 	int cw = 1;
 	for(int i=0;i<node_2d.size();i++)
 	{
@@ -84,12 +85,79 @@ vector<Voxel_2d> reeb_graph::find_circle()
 		}
 		cw = 4 - cw;
 	}
+	//connect layer
 	for(int i=0;i<edge.size();i++)
 		if(edge_mask[i] == 1)
 		{
 			vector<neighbor_point4> tmp_neighbor_vec = 
 				circle_vec[edge[i].first-1].find_layer_connection(circle_vec[edge[i].second-1]);
 			cout<<tmp_neighbor_vec.size()<<endl;
+			if(tmp_neighbor_vec.size() == 0)
+			{
+				circle_vec[edge[i].second-1] = circle_vec[edge[i].second-1].circle_reverse();
+				vector<neighbor_point4> tmp_neighbor_vec = 
+				circle_vec[edge[i].first-1].find_layer_connection(circle_vec[edge[i].second-1]);
+				cout<<"reverse : "<<tmp_neighbor_vec.size()<<endl;
+				circle_vec[edge[i].first-1].add_up_and_down(circle_vec[edge[i].second-1], tmp_neighbor_vec[0]);
+			}
+			else
+				circle_vec[edge[i].first-1].add_up_and_down(circle_vec[edge[i].second-1], tmp_neighbor_vec[0]);
 		}
+	//merge node in the same layer
+	for(int i=0;i<node_no.size();i++)
+		if(node_no[i].size()>0)
+		{
+			Voxel_2d tmp_plane = circle_vec[node_no[i][0]-1];
+			for(int j=0;j<node_no[i].size();j++)
+				tmp_plane.add_circle(circle_vec[node_no[i][j]-1]);
+			//tmp_plane.print();
+			plane_circle_vec.push_back(tmp_plane);
+		}
+		check_whole_circle();
 	return plane_vec;
+}
+
+void reeb_graph::check_whole_circle()
+{
+	const int dx[6] = {1,0,-1,0,0,0};
+	const int dy[6] = {0,1,0,-1,0,0};
+	const int dz[6] = {0,0,0,0,-1,1};
+	int current_x = 0, current_y = 0, current_z = 0;
+	int exist_num = 0;
+	for(int k=0;k<plane_circle_vec.size();k++)
+		for(int i=0;i<plane_circle_vec[k]._data.size();i++)
+			for(int j=0;j<plane_circle_vec[k]._data[i].size();j++)
+				if(plane_circle_vec[k]._data[i][j] > VOXEL_3D_EXIST)
+				{
+					exist_num++;
+					current_x = i;
+					current_y = j;
+					current_z = k;
+				}
+	int st_x = current_x;
+	int st_y = current_y;
+	int st_z = current_z;
+	while(exist_num)
+	{
+		exist_num--;
+		if(plane_circle_vec[current_z]._data[current_x][current_y] <= VOXEL_3D_EXIST)
+		{
+			cout<<"check break error"<<endl;
+			return;
+		}
+		int next_x = current_x + dx[plane_circle_vec[current_z]._data[current_x][current_y]-2];
+		int next_y = current_y + dy[plane_circle_vec[current_z]._data[current_x][current_y]-2];
+		int next_z = current_z + dz[plane_circle_vec[current_z]._data[current_x][current_y]-2];
+		current_x = next_x;
+		current_y = next_y;
+		current_z = next_z;
+	}
+	if((current_x == st_x) &&(current_y == st_y)&&(current_z == st_z))
+		cout<<"check OK"<<endl;
+	else
+	{
+		cout<<"check error"<<endl;
+		cout<<current_x<<"  "<<st_x<<endl;
+		int x;cin>>x;
+	}
 }

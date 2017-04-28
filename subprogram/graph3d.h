@@ -33,6 +33,7 @@ struct neighbor_point4
 class Voxel_2d
 {
 	vector<vector<int> > _data;
+	friend class reeb_graph;
 public:
 	Voxel_2d(){}
 	Voxel_2d(vector<vector<int> > x) : _data(x){}
@@ -53,9 +54,11 @@ public:
 //between 2 layers
 	int count_overlap(Voxel_2d tar);
 	Voxel_2d build_overlap(Voxel_2d tar);
-	vector<neighbor_point4> find_layer_connection(Voxel_2d& tar);
+	vector<neighbor_point4> find_layer_connection(Voxel_2d tar);
+	void add_up_and_down(Voxel_2d& tar, neighbor_point4 nbor);//!!!!!!!!!!!!!!!!!!chang data!!!!!!!!!!
 	Voxel_2d substract(Voxel_2d x);//return this - x
 //other function
+	Voxel_2d circle_reverse();
 	int count_type(int type);
 };
 
