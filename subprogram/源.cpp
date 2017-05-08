@@ -9,8 +9,10 @@ void main_process(string input_name)
 	vector<Voxel_2d> bunny_2d = bunny_3d.trans_2d();
 	
 	reeb_graph bunny_reeb(bunny_2d);
-	bunny_reeb.print();
+	//bunny_reeb.print();
 	bunny_reeb.find_circle();
+	bunny_reeb.save(("circle_"+input_name).c_str());
+	bunny_reeb.save_path(("path_"+input_name).c_str());
 	cout<<"finish finding circle"<<endl; 
 }
 

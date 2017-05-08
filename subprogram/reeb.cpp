@@ -91,13 +91,13 @@ vector<Voxel_2d> reeb_graph::find_circle()
 		{
 			vector<neighbor_point4> tmp_neighbor_vec = 
 				circle_vec[edge[i].first-1].find_layer_connection(circle_vec[edge[i].second-1]);
-			cout<<tmp_neighbor_vec.size()<<endl;
+			//cout<<tmp_neighbor_vec.size()<<endl;
 			if(tmp_neighbor_vec.size() == 0)
 			{
 				circle_vec[edge[i].second-1] = circle_vec[edge[i].second-1].circle_reverse();
 				vector<neighbor_point4> tmp_neighbor_vec = 
 				circle_vec[edge[i].first-1].find_layer_connection(circle_vec[edge[i].second-1]);
-				cout<<"reverse : "<<tmp_neighbor_vec.size()<<endl;
+				//cout<<"reverse : "<<tmp_neighbor_vec.size()<<endl;
 				circle_vec[edge[i].first-1].add_up_and_down(circle_vec[edge[i].second-1], tmp_neighbor_vec[0]);
 			}
 			else
@@ -134,6 +134,7 @@ void reeb_graph::check_whole_circle()
 					current_y = j;
 					current_z = k;
 				}
+	cout<<"total voxel:  "<<exist_num<<endl;
 	int st_x = current_x;
 	int st_y = current_y;
 	int st_z = current_z;
@@ -160,4 +161,59 @@ void reeb_graph::check_whole_circle()
 		cout<<current_x<<"  "<<st_x<<endl;
 		int x;cin>>x;
 	}
+}
+
+const int VOXEL_2D_PRINT_OFFSET = 1;
+const char VOXEL_2D_PRINT_CHAR[10] = {'X', '0', '*','V','>','A','<','U','D'};
+
+void reeb_graph::save(const char* filename)
+{
+	ofstream fout(filename);
+	for(int k=0;k<plane_circle_vec.size();k++)
+	{
+		fout<<"level: "<<k<<endl;
+		for(int i=0;i<plane_circle_vec[k]._data.size();i++)
+		{
+			for(int j=0;j<plane_circle_vec[k]._data[i].size();j++)
+				fout<<VOXEL_2D_PRINT_CHAR[plane_circle_vec[k]._data[i][j] + VOXEL_2D_PRINT_OFFSET]<<" ";
+			fout<<endl;
+		}
+	}
+	fout.close();
+}
+
+void reeb_graph::save_path(const char* filename)
+{
+	ofstream fout(filename);
+	const int dx[6] = {1,0,-1,0,0,0};
+	const int dy[6] = {0,1,0,-1,0,0};
+	const int dz[6] = {0,0,0,0,-1,1};
+	const int direction[6] = {1,2,3,4,5,6};
+	int current_x = 0, current_y = 0, current_z = 0;
+	int exist_num = 0;
+	for(int k=0;k<plane_circle_vec.size();k++)
+		for(int i=0;i<plane_circle_vec[k]._data.size();i++)
+			for(int j=0;j<plane_circle_vec[k]._data[i].size();j++)
+				if(plane_circle_vec[k]._data[i][j] > VOXEL_3D_EXIST)
+				{
+					exist_num++;
+					current_x = i;
+					current_y = j;
+					current_z = k;
+				}
+	int st_x = current_x;
+	int st_y = current_y;
+	int st_z = current_z;
+	while(exist_num)
+	{
+		exist_num--;
+		fout<<plane_circle_vec[current_z]._data[current_x][current_y]-2<<endl;
+		int next_x = current_x + dx[plane_circle_vec[current_z]._data[current_x][current_y]-2];
+		int next_y = current_y + dy[plane_circle_vec[current_z]._data[current_x][current_y]-2];
+		int next_z = current_z + dz[plane_circle_vec[current_z]._data[current_x][current_y]-2];
+		current_x = next_x;
+		current_y = next_y;
+		current_z = next_z;
+	}
+	fout.close();
 }
