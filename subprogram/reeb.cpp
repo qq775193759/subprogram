@@ -188,7 +188,7 @@ void reeb_graph::save_path(const char* filename)
 	const int dx[6] = {1,0,-1,0,0,0};
 	const int dy[6] = {0,1,0,-1,0,0};
 	const int dz[6] = {0,0,0,0,-1,1};
-	const int direction[6] = {1,2,3,4,5,6};
+	const int direction[6] = {0,2,1,3,4,5};
 	int current_x = 0, current_y = 0, current_z = 0;
 	int exist_num = 0;
 	for(int k=0;k<plane_circle_vec.size();k++)
@@ -207,7 +207,7 @@ void reeb_graph::save_path(const char* filename)
 	while(exist_num)
 	{
 		exist_num--;
-		fout<<plane_circle_vec[current_z]._data[current_x][current_y]-2<<endl;
+		fout<<direction[plane_circle_vec[current_z]._data[current_x][current_y]-2]<<endl;
 		int next_x = current_x + dx[plane_circle_vec[current_z]._data[current_x][current_y]-2];
 		int next_y = current_y + dy[plane_circle_vec[current_z]._data[current_x][current_y]-2];
 		int next_z = current_z + dz[plane_circle_vec[current_z]._data[current_x][current_y]-2];
