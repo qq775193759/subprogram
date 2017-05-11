@@ -83,7 +83,7 @@ void cal_link(const char* src, const char* tar, const char* output)
 
 int main()
 {
-    cal_link("cross_2d.txt","eight_2d.txt","cross_eight_2d.link");
-    cal_link("eight_2d.txt","cross_2d.txt","eight_cross_2d.link");
+    cal_link("demo4/cross_2d.txt","demo4/eight_2d.txt","demo4/cross_eight_2d.link");
+    cal_link("demo4/eight_2d.txt","demo4/cross_2d.txt","demo4/eight_cross_2d.link");
     return 0;
 }
