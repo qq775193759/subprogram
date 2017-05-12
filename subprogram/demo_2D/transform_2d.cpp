@@ -31,8 +31,11 @@ vector<Link> read_link(const char* filename)
     return res;
 }
 
+int SHOW_SWITCH = 0;
+
 void show(vector<Link> link_vec)
 {
+    if(SHOW_SWITCH == 0) return;
     //for(int i=0;i<link_vec.size();i++)
     //    cout<<link_vec[i].fs<<" ";
     //cout<<endl;
@@ -73,12 +76,25 @@ void show(vector<Link> link_vec)
     {
         for(int j=0;j<tmp_vec_2d[i].size();j++)
         {
-            cout<<tmp_vec_2d[i][j]<<" ";
+            if(tmp_vec_2d[i][j])
+                cout<<tmp_vec_2d[i][j]<<" ";
+            else
+                cout<<"  ";
             //cout<<setiosflags(ios::left)<<setw(3)<<tmp_vec_2d[i][j];
         }
         cout<<endl;
     }
     cout<<endl;
+}
+
+void save_link_vec(vector<Link> link_src, const char* filename)
+{
+    ofstream fout(filename);
+    for(int i=0;i<link_src.size();i++)
+    {
+        fout<<link_src[i].fc<<" "<<link_src[i].fs<<" "<<link_src[i].fm<<" "<<link_src[i].fe<<endl;
+    }
+    fout.close();
 }
 
 void link_rotate(Link& x, int clock)
@@ -173,14 +189,14 @@ int check_positive(int x)
     return 0;
 }
 
-void straighten_2d(vector<Link>& link_src, int constraint)
+void straighten_2d(vector<Link>& link_src)
 {
     show(link_src);
     for(int i=0;i<link_src.size();i++)
     {
         int move_flag = 0;
         int tmp_ft;
-        int tmp_fm;
+        int tmp_fm=0;
         //strategy
         if(link_src[i].fs == link_src[i].ft)
         {
@@ -188,8 +204,16 @@ void straighten_2d(vector<Link>& link_src, int constraint)
             {
                 cout<<"CASE 1 :"<<endl;
                 move_flag = 1;
-                tmp_ft = link_src[i].fs %4 + 1;
-                tmp_fm = 0;
+                if(link_src[i].fe == 0)
+                {
+                    tmp_ft = link_src[i].fs %4 + 1;
+                    link_src[i].fe = tmp_ft;
+                }
+                else
+                {
+                    tmp_ft = link_src[i].fe;
+                }
+
             }
         }
         else if(link_src[i].fm == 0)
@@ -201,23 +225,21 @@ void straighten_2d(vector<Link>& link_src, int constraint)
                     cout<<"CASE 2 :"<<endl;
                     move_flag = 1;
                     tmp_ft = link_src[i].ft;
-                    tmp_fm = 0;
                 }
                 else
                 {
                     cout<<"CASE 3 :"<<endl;
                     move_flag = 1;
-                    if(constraint==0)
+                    if(link_src[i].fe == 0)
                     {
                         tmp_ft = link_src[i].fs %4 + 1;
-                        tmp_fm = 0;
+                        link_src[i].fe = tmp_ft;
                     }
                     else
                     {
-                        tmp_ft = (link_src[i].fs+2)%4 + 1;
+                        tmp_ft = link_src[i].fe;
                         tmp_fm = link_src[i].ft;
                     }
-
                 }
             }
         }
@@ -243,9 +265,15 @@ int main()
     const char* filename_src = "demo1/cross_eight_2d.link";
     const char* filename_tar = "demo1/eight_cross_2d.link";
     vector<Link> link_src = read_link(filename_src);
+    SHOW_SWITCH = 1;
+    straighten_2d(link_src);
+    SHOW_SWITCH = 0;
+    link_vec_rotate_entry(link_src);
+    check_link_2d(link_src);
+    save_link_vec(link_src, filename_tar);
+    //link
     vector<Link> link_tar = read_link(filename_tar);
-    //check_link_2d(link_src);
-    //straighten_2d(link_src, 0);link_vec_rotate_entry(link_src);
-    straighten_2d(link_tar, 1);link_vec_rotate_entry(link_tar);
+    SHOW_SWITCH = 1;
+    straighten_2d(link_tar);
     return 0;
 }
