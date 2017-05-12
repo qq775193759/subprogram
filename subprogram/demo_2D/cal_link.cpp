@@ -2,6 +2,7 @@
 #include<fstream>
 #include<vector>
 #include<cmath>
+#include<string>
 using namespace std;
 
 vector<int> read_path(const char* filename)
@@ -44,7 +45,7 @@ void face_state_change(int face[6], int fs, int ft)
     }
 }
 
-void cal_link(const char* src, const char* tar, const char* output)
+void cal_link(const string src, const string tar, const string output)
 {
     const int fm_list[4][4] = {
         0,3,0,0,
@@ -52,9 +53,9 @@ void cal_link(const char* src, const char* tar, const char* output)
         0,0,0,2,
         0,0,1,0
     };
-    ofstream fout(output);
-    vector<int> path_src = read_path(src);
-    vector<int> path_tar = read_path(tar);
+    ofstream fout(output.c_str());
+    vector<int> path_src = read_path(src.c_str());
+    vector<int> path_tar = read_path(tar.c_str());
     cout<<"src size: "<<path_src.size()<<endl;
     cout<<"tar size: "<<path_tar.size()<<endl;
     if(path_src.size() != path_tar.size())
@@ -66,6 +67,7 @@ void cal_link(const char* src, const char* tar, const char* output)
         int fs = path_src[i] + 1;
         int ft = face[path_tar[i]];
         int fm = fm_list[fs-1][ft-1];
+        int fe = 0;
         if(fm>0)
         {
             face_state_change(face, fs, fm);
@@ -76,14 +78,24 @@ void cal_link(const char* src, const char* tar, const char* output)
         fout<<fs<<' ';
         fout<<ft<<' ';
         fout<<fm<<' ';
+        fout<<fe<<' ';
         fout<<endl;
     }
     fout.close();
 }
 
+void main_func(string s)
+{
+    cal_link(s+"cross_2d.txt",s+"eight_2d.txt",s+"cross_eight_2d.link");
+    cal_link(s+"eight_2d.txt",s+"cross_2d.txt",s+"eight_cross_2d.link");
+}
+
 int main()
 {
-    cal_link("demo4/cross_2d.txt","demo4/eight_2d.txt","demo4/cross_eight_2d.link");
-    cal_link("demo4/eight_2d.txt","demo4/cross_2d.txt","demo4/eight_cross_2d.link");
+    main_func("demo1/");
+    main_func("demo2/");
+    main_func("demo3/");
+    main_func("demo4/");
+    main_func("demo5/");
     return 0;
 }
