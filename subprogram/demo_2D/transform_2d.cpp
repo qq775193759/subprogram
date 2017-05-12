@@ -32,6 +32,7 @@ vector<Link> read_link(const char* filename)
 }
 
 int SHOW_SWITCH = 0;
+int SHOW_WAY = 0;
 
 void show(vector<Link> link_vec)
 {
@@ -69,18 +70,22 @@ void show(vector<Link> link_vec)
     }
     for(int i=0;i<x_vec.size();i++)
     {
-        tmp_vec_2d[y_vec[i]-y_min][x_vec[i]-x_min]++;
-        //tmp_vec_2d[y_vec[i]-y_min][x_vec[i]-x_min]+=i+1;
+        if(SHOW_WAY)
+            tmp_vec_2d[y_vec[i]-y_min][x_vec[i]-x_min]++;
+        else
+            tmp_vec_2d[y_vec[i]-y_min][x_vec[i]-x_min]+=i+1;
     }
     for(int i=0;i<tmp_vec_2d.size();i++)
     {
         for(int j=0;j<tmp_vec_2d[i].size();j++)
         {
-            if(tmp_vec_2d[i][j])
-                cout<<tmp_vec_2d[i][j]<<" ";
+            if(SHOW_WAY)
+                if(tmp_vec_2d[i][j])
+                    cout<<tmp_vec_2d[i][j]<<" ";
+                else
+                    cout<<"  ";
             else
-                cout<<"  ";
-            //cout<<setiosflags(ios::left)<<setw(3)<<tmp_vec_2d[i][j];
+                cout<<setiosflags(ios::left)<<setw(3)<<tmp_vec_2d[i][j];
         }
         cout<<endl;
     }
@@ -160,7 +165,7 @@ void link_vec_rotate_entry(vector<Link>& link_src, int loop_i, int fs, int ft, i
 }
 
 //recover entry
-void link_vec_rotate_entry(vector<Link>& link_src, int log_sit=rotlog.size()-1, int log_len=rotlog.size())
+void link_vec_recover_entry(vector<Link>& link_src, int log_sit=rotlog.size()-1, int log_len=rotlog.size())
 {
     for(int i=0;i<log_len;i++)
     {
@@ -182,14 +187,7 @@ void check_link_2d(vector<Link>& link_src)
     }
 }
 
-int check_positive(int x)
-{
-    if(x == 1) return 1;
-    if(x == 3) return 1;
-    return 0;
-}
-
-void straighten_2d(vector<Link>& link_src)
+void straighten_2d(vector<Link>& link_src, int constraint)
 {
     show(link_src);
     for(int i=0;i<link_src.size();i++)
@@ -198,61 +196,56 @@ void straighten_2d(vector<Link>& link_src)
         int tmp_ft;
         int tmp_fm=0;
         //strategy
-        if(link_src[i].fs == link_src[i].ft)
+        if(link_src[i].fs == 1);
+        else if(link_src[i].fs == 3)
         {
-            if(check_positive(link_src[i].fs) == 0)
+            //change middle
+            if((link_src[i].fm == 2) && (constraint == 0))
+                link_src[i].fm = 1;
+            //extend 180
+            if((link_src[i].fm == 0) && (link_src[i].fe == 0))
             {
-                cout<<"CASE 1 :"<<endl;
-                move_flag = 1;
-                if(link_src[i].fe == 0)
-                {
-                    tmp_ft = link_src[i].fs %4 + 1;
-                    link_src[i].fe = tmp_ft;
-                }
-                else
-                {
-                    tmp_ft = link_src[i].fe;
-                }
-
+                link_src[i].fe = 1;
             }
-        }
-        else if(link_src[i].fm == 0)
-        {
-            if(check_positive(link_src[i].fs) == 0)
+            //try to face 1
+            if((link_src[i].ft == 1)||(link_src[i].fm == 1)||(link_src[i].fe == 1))
             {
-                if(check_positive(link_src[i].ft) == 1)
-                {
-                    cout<<"CASE 2 :"<<endl;
-                    move_flag = 1;
-                    tmp_ft = link_src[i].ft;
-                }
-                else
-                {
-                    cout<<"CASE 3 :"<<endl;
-                    move_flag = 1;
-                    if(link_src[i].fe == 0)
-                    {
-                        tmp_ft = link_src[i].fs %4 + 1;
-                        link_src[i].fe = tmp_ft;
-                    }
-                    else
-                    {
-                        tmp_ft = link_src[i].fe;
-                        tmp_fm = link_src[i].ft;
-                    }
-                }
+                cout<<"case 1:"<<endl;
+                move_flag = 1;
+                tmp_ft = 1;
             }
         }
         else
         {
-            if(check_positive(link_src[i].fs) == 0)
+            //extend 180
+            if((link_src[i].fm == 0) && (link_src[i].fe == 0))
             {
-                cout<<"CASE 4 :"<<endl;
+                link_src[i].fe = 1;
+            }
+            //try to face 1
+            if((link_src[i].ft == 1)||(link_src[i].fm == 1))
+            {
+                cout<<"case 2:"<<endl;
                 move_flag = 1;
-                tmp_ft = link_src[i].ft;
+                tmp_ft = 1;
+                tmp_fm = link_src[i].fm;
+            }
+            else if(link_src[i].fe == 1)
+            {
+                cout<<"case 3:"<<endl;
+                move_flag = 1;
+                tmp_ft = 1;
+                tmp_fm = link_src[i].ft;
+            }
+            else if((link_src[i].ft == 3)||(link_src[i].fm == 3))
+            {
+                cout<<"case 4:"<<endl;
+                move_flag = 1;
+                tmp_ft = 1;
                 tmp_fm = link_src[i].fm;
             }
         }
+        //do rotate
         if(move_flag)
         {
             link_vec_rotate_entry(link_src, i, link_src[i].fs, tmp_ft, tmp_fm);
@@ -266,14 +259,14 @@ int main()
     const char* filename_tar = "demo1/eight_cross_2d.link";
     vector<Link> link_src = read_link(filename_src);
     SHOW_SWITCH = 1;
-    straighten_2d(link_src);
+    straighten_2d(link_src, 0);
     SHOW_SWITCH = 0;
-    link_vec_rotate_entry(link_src);
+    link_vec_recover_entry(link_src);
     check_link_2d(link_src);
     save_link_vec(link_src, filename_tar);
     //link
     vector<Link> link_tar = read_link(filename_tar);
     SHOW_SWITCH = 1;
-    straighten_2d(link_tar);
+    straighten_2d(link_tar, 1);
     return 0;
 }
