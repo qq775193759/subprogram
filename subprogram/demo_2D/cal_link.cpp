@@ -92,10 +92,13 @@ void main_func(string s)
 
 int main()
 {
-    main_func("demo1/");
-    main_func("demo2/");
-    main_func("demo3/");
-    main_func("demo4/");
-    main_func("demo5/");
+    //main_func("demo1/");
+    //main_func("demo2/");
+    //main_func("demo3/");
+    //main_func("demo4/");
+    //main_func("demo5/");
+    main_func("demo6/");
+    //main_func("demo7/");
+    //main_func("demo8/");
     return 0;
 }

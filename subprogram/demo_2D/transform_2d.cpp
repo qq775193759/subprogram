@@ -253,10 +253,12 @@ void straighten_2d(vector<Link>& link_src, int constraint)
     }
 }
 
+
 int main()
 {
-    const char* filename_src = "demo1/cross_eight_2d.link";
-    const char* filename_tar = "demo1/eight_cross_2d.link";
+    const char* filename_src = "demo8/cross_eight_2d.link";
+    const char* filename_tar = "demo8/eight_cross_2d.link";
+    const char* filename_res = "demo8/res_2d.link";
     vector<Link> link_src = read_link(filename_src);
     SHOW_SWITCH = 1;
     straighten_2d(link_src, 0);
@@ -267,6 +269,11 @@ int main()
     //link
     vector<Link> link_tar = read_link(filename_tar);
     SHOW_SWITCH = 1;
+    rotlog.clear();
     straighten_2d(link_tar, 1);
+    SHOW_SWITCH = 0;
+    link_vec_recover_entry(link_tar);
+    check_link_2d(link_tar);
+    save_link_vec(link_tar, filename_res);
     return 0;
 }
