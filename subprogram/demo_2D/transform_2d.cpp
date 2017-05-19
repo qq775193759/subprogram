@@ -92,6 +92,45 @@ void show(vector<Link> link_vec)
     cout<<endl;
 }
 
+int check(vector<Link> link_vec)
+{
+    const int dx[4] = {1,-1,0,0};
+    const int dy[4] = {0,0,1,-1};
+    vector<int> x_vec;
+    vector<int> y_vec;
+    int x_min = 0, x_max = 0, y_min = 0, y_max = 0;
+    int x_current = 0, y_current = 0;
+    x_vec.push_back(x_current);
+    y_vec.push_back(y_current);
+    for(int i=0;i<link_vec.size();i++)
+    {
+        x_current += dx[link_vec[i].fc-1];
+        y_current += dy[link_vec[i].fc-1];
+        x_vec.push_back(x_current);
+        y_vec.push_back(y_current);
+        x_min = min(x_min, x_current);
+        x_max = max(x_max, x_current);
+        y_min = min(y_min, y_current);
+        y_max = max(y_max, y_current);
+    }
+    int x_len = x_max-x_min+1;
+    int y_len = y_max-y_min+1;
+    vector< vector<int> > tmp_vec_2d;
+    for(int i=0;i<y_len;i++)
+    {
+        vector<int> tmp_vec(x_len, 0);
+        tmp_vec_2d.push_back(tmp_vec);
+    }
+    for(int i=0;i<x_vec.size();i++)
+    {
+            tmp_vec_2d[y_vec[i]-y_min][x_vec[i]-x_min]++;
+            if(tmp_vec_2d[y_vec[i]-y_min][x_vec[i]-x_min]>=2)
+                return 0;
+    }
+    return 1;
+}
+
+
 void save_link_vec(vector<Link> link_src, const char* filename)
 {
     ofstream fout(filename);
@@ -115,7 +154,7 @@ void link_rotate(Link& x, int clock)
     x.fc = face_list[clock][x.fc];
 }
 
-void link_vec_rotate(vector<Link>& link_src, int loop_i, int fs, int ft)
+void link_vec_rotate_without_show(vector<Link>& link_src, int loop_i, int fs, int ft)
 {
     const int clock_list[4][4]={
         -1,-1,0,1,
@@ -131,7 +170,23 @@ void link_vec_rotate(vector<Link>& link_src, int loop_i, int fs, int ft)
     {
         link_rotate(link_src[j], clock);
     }
+}
+
+void link_vec_rotate(vector<Link>& link_src, int loop_i, int fs, int ft)
+{
+    link_vec_rotate_without_show(link_src, loop_i, fs, ft);
     show(link_src);
+}
+
+int check_and_link_vec_rotate(vector<Link>& link_src, int loop_i, int fs, int ft)
+{
+    link_vec_rotate_without_show(link_src, loop_i, fs, ft);
+    int res = check(link_src);
+    if(res == 0)
+        link_vec_rotate_without_show(link_src, loop_i, ft, fs);
+    else
+        show(link_src);
+    return res;
 }
 
 struct RotLog
@@ -165,11 +220,11 @@ void link_vec_rotate_entry(vector<Link>& link_src, int loop_i, int fs, int ft, i
 }
 
 //recover entry
-void link_vec_recover_entry(vector<Link>& link_src, int log_sit=rotlog.size()-1, int log_len=rotlog.size())
+void link_vec_recover_entry(vector<Link>& link_src, vector<RotLog> loclog)
 {
-    for(int i=0;i<log_len;i++)
+    for(int i=1;i<=loclog.size();i++)
     {
-        RotLog tmp_log = rotlog[log_sit-i];
+        RotLog tmp_log = rotlog[loclog.size()-i];
         link_vec_rotate(link_src, tmp_log.loop_i, tmp_log.ft, tmp_log.fs);
     }
 }
@@ -210,7 +265,8 @@ void straighten_2d(vector<Link>& link_src, int constraint)
             //try to face 1
             if((link_src[i].ft == 1)||(link_src[i].fm == 1)||(link_src[i].fe == 1))
             {
-                cout<<"case 1:"<<endl;
+                if(SHOW_SWITCH)
+                    cout<<"case 1:"<<endl;
                 move_flag = 1;
                 tmp_ft = 1;
             }
@@ -225,21 +281,24 @@ void straighten_2d(vector<Link>& link_src, int constraint)
             //try to face 1
             if((link_src[i].ft == 1)||(link_src[i].fm == 1))
             {
-                cout<<"case 2:"<<endl;
+                if(SHOW_SWITCH)
+                    cout<<"case 2:"<<endl;
                 move_flag = 1;
                 tmp_ft = 1;
                 tmp_fm = link_src[i].fm;
             }
             else if(link_src[i].fe == 1)
             {
-                cout<<"case 3:"<<endl;
+                if(SHOW_SWITCH)
+                    cout<<"case 3:"<<endl;
                 move_flag = 1;
                 tmp_ft = 1;
                 tmp_fm = link_src[i].ft;
             }
             else if((link_src[i].ft == 3)||(link_src[i].fm == 3))
             {
-                cout<<"case 4:"<<endl;
+                if(SHOW_SWITCH)
+                    cout<<"case 4:"<<endl;
                 move_flag = 1;
                 tmp_ft = 1;
                 tmp_fm = link_src[i].fm;
@@ -253,6 +312,26 @@ void straighten_2d(vector<Link>& link_src, int constraint)
     }
 }
 
+void straighten_2d_entry(vector<Link>& link_src, int constraint)
+{
+    rotlog.clear();
+    straighten_2d(link_src, 0);
+    vector<RotLog> tmplog = rotlog;
+    link_vec_recover_entry(link_src, tmplog);
+
+    SHOW_SWITCH = 1;
+    vector<Link>link_src_cpy = link_src;
+    show(link_src_cpy);
+    for(int i=0;i<tmplog.size();i++)
+    {
+        RotLog tmp_log = tmplog[i];
+        int res = check_and_link_vec_rotate(link_src_cpy, tmp_log.loop_i, tmp_log.fs, tmp_log.ft);
+        if(res == 0)
+            tmplog.push_back(RotLog(tmp_log.loop_i, tmp_log.fs, tmp_log.ft));
+    }
+    SHOW_SWITCH = 0;
+}
+
 
 int main()
 {
@@ -260,19 +339,12 @@ int main()
     const char* filename_tar = "demo8/eight_cross_2d.link";
     const char* filename_res = "demo8/res_2d.link";
     vector<Link> link_src = read_link(filename_src);
-    SHOW_SWITCH = 1;
-    straighten_2d(link_src, 0);
-    SHOW_SWITCH = 0;
-    link_vec_recover_entry(link_src);
+    straighten_2d_entry(link_src, 0);
     check_link_2d(link_src);
     save_link_vec(link_src, filename_tar);
     //link
     vector<Link> link_tar = read_link(filename_tar);
-    SHOW_SWITCH = 1;
-    rotlog.clear();
-    straighten_2d(link_tar, 1);
-    SHOW_SWITCH = 0;
-    link_vec_recover_entry(link_tar);
+    straighten_2d_entry(link_tar, 1);
     check_link_2d(link_tar);
     save_link_vec(link_tar, filename_res);
     return 0;
