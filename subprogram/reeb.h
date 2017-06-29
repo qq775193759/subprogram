@@ -21,5 +21,5 @@ public:
 	vector<Voxel_2d> find_circle();
 	void check_whole_circle();
 	void save(const char* filename);
-	void save_path(const char* filename);
+	void save_path(const char* filename, const char* filename_edge);
 };

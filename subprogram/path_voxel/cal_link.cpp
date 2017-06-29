@@ -68,6 +68,7 @@ void cal_link(const char* src, const char* tar, const char* output)
         int fs = path_src[i] + 1;
         int ft = face[path_tar[i]];
         int fm = fm_list[fs-1][ft-1];
+        int fe = 0;
         if(fm>0)
         {
             face_state_change(face, fs, fm);
@@ -78,8 +79,9 @@ void cal_link(const char* src, const char* tar, const char* output)
         fout<<fs<<' ';
         fout<<ft<<' ';
         fout<<fm<<' ';
-        for(int j=0;j<6;j++)
-            fout<<face[j]<<' ';
+        fout<<fe<<' ';
+        /* for(int j=0;j<6;j++)
+            fout<<face[j]<<' '; */
         fout<<endl;
     }
     fout.close();

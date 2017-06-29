@@ -182,9 +182,10 @@ void reeb_graph::save(const char* filename)
 	fout.close();
 }
 
-void reeb_graph::save_path(const char* filename)
+void reeb_graph::save_path(const char* filename, const char* filename_edge)
 {
 	ofstream fout(filename);
+	ofstream fout_edge(filename_edge);
 	const int dx[6] = {1,0,-1,0,0,0};
 	const int dy[6] = {0,1,0,-1,0,0};
 	const int dz[6] = {0,0,0,0,-1,1};
@@ -208,6 +209,7 @@ void reeb_graph::save_path(const char* filename)
 	{
 		exist_num--;
 		fout<<direction[plane_circle_vec[current_z]._data[current_x][current_y]-2]<<endl;
+		fout_edge<<current_x<<" "<<current_y<<" "<<current_z<<endl;
 		int next_x = current_x + dx[plane_circle_vec[current_z]._data[current_x][current_y]-2];
 		int next_y = current_y + dy[plane_circle_vec[current_z]._data[current_x][current_y]-2];
 		int next_z = current_z + dz[plane_circle_vec[current_z]._data[current_x][current_y]-2];
@@ -216,4 +218,5 @@ void reeb_graph::save_path(const char* filename)
 		current_z = next_z;
 	}
 	fout.close();
+	fout_edge.close();
 }

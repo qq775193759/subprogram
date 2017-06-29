@@ -335,14 +335,16 @@ void straighten_2d_entry(vector<Link>& link_src, int constraint)
 
 int main()
 {
-    const char* filename_src = "demo8/cross_eight_2d.link";
-    const char* filename_tar = "demo8/eight_cross_2d.link";
-    const char* filename_res = "demo8/res_2d.link";
+    const char* filename_src = "demo6/cross_eight_2d.link";
+    const char* filename_tar = "demo6/eight_cross_2d.link";
+    const char* filename_res = "demo6/res_2d.link";
+    cout<<"source:"<<endl<<endl;
     vector<Link> link_src = read_link(filename_src);
     straighten_2d_entry(link_src, 0);
     check_link_2d(link_src);
     save_link_vec(link_src, filename_tar);
     //link
+    cout<<"target:"<<endl<<endl;
     vector<Link> link_tar = read_link(filename_tar);
     straighten_2d_entry(link_tar, 1);
     check_link_2d(link_tar);

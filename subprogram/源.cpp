@@ -12,7 +12,7 @@ void main_process(string input_name)
 	//bunny_reeb.print();
 	bunny_reeb.find_circle();
 	bunny_reeb.save(("circle_"+input_name).c_str());
-	bunny_reeb.save_path(("path_"+input_name).c_str());
+	bunny_reeb.save_path(("path_"+input_name).c_str(), ("edge_"+input_name).c_str());
 	cout<<"finish finding circle"<<endl; 
 }
 
