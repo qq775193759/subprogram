@@ -38,23 +38,21 @@ reeb_graph::reeb_graph(vector<Voxel_2d> x)
 	cout<<"edge size: "<<edge.size()<<endl;
 	//make edge mask to build a tree
 	vector<int> node_set(node_num, 0);
-	edge_mask.push_back(1);
-	node_set[edge[0].first-1] = 1;
-	node_set[edge[0].second-1] = 1;
-	for(int i=1;i<edge.size();i++)
-	{
-		int edge_x = edge[i].first-1;
-		int edge_y = edge[i].second-1;
-		int set_sum = node_set[edge_x] + node_set[edge_y];
-		if(set_sum == 1)
+	edge_mask = vector<int>(edge.size(), 0);
+	node_set[0] = 1;
+	for(int iter=0;iter<edge.size();iter++)
+		for(int i=0;i<edge.size();i++)
 		{
-			node_set[edge_x] = 1;
-			node_set[edge_y] = 1;
-			edge_mask.push_back(1);
+			int edge_x = edge[i].first-1;
+			int edge_y = edge[i].second-1;
+			int set_sum = node_set[edge_x] + node_set[edge_y];
+			if(set_sum == 1)
+			{
+				node_set[edge_x] = 1;
+				node_set[edge_y] = 1;
+				edge_mask[i] = 1;
+			}
 		}
-		else
-			edge_mask.push_back(0);
-	}
 }
 
 void reeb_graph::print()
@@ -85,6 +83,9 @@ vector<Voxel_2d> reeb_graph::find_circle()
 		}
 		cw = 4 - cw;
 	}
+	//debug print
+	//for(int i=0;i<circle_vec.size();i++)
+	//	circle_vec[i].print();
 	//connect layer
 	for(int i=0;i<edge.size();i++)
 		if(edge_mask[i] == 1)

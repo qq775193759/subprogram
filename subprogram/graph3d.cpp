@@ -141,7 +141,8 @@ vector<Voxel_2d> Voxel_2d::continuous_2d()
 	for(int i=2;i<union_num;i++)
 	{
 		Voxel_2d tmp_2d(find_label_2d(tmp_data, i));
-		res.push_back(tmp_2d);
+		if(tmp_2d.count_type(VOXEL_3D_EXIST)>3)
+			res.push_back(tmp_2d);
 	}
 	return res;
 }
@@ -317,6 +318,9 @@ Voxel_2d Voxel_2d::find_circle(int init_cw)
 		cw = 4 - cw;
 		rest = rest.substract(tmp_edge);
 	}
+	//debug print
+	for(int i=0;i<edge_circle_vec.size();i++)
+		edge_circle_vec[i].print();
 	//merge circle
 	res = res.substract(res);
 	res.add_circle(edge_circle_vec[0]);
@@ -330,17 +334,17 @@ Voxel_2d Voxel_2d::find_circle(int init_cw)
 			//res.print();
 			//edge_circle_vec[i].print();
 		}
-		res.add_circle(edge_circle_vec[i]);
 		if(tmp_neighbor_vec.size() > 0)
 		{
+			res.add_circle(edge_circle_vec[i]);
 			neighbor_point4 tmp_neighbor = tmp_neighbor_vec[0];
 			res._data[tmp_neighbor.sx][tmp_neighbor.sy] = tmp_neighbor.sd;
 			res._data[tmp_neighbor.tx][tmp_neighbor.ty] = tmp_neighbor.td;
 		}
 		else
 		{
-			cout<<"there is no overlap!!!"<<endl;
-			int x;cin>>x;
+			//res.print();
+			return res;
 		}
 	}
 	//res.print();
