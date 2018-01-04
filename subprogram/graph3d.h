@@ -48,7 +48,7 @@ public:
 	vector<Voxel_2d> fix_odd_from_edge();//delete odd point from edge
 	Voxel_2d find_circle_from_edge(int cw);
 	void add_circle(Voxel_2d tar);//!!!!!!!!!!!!!!!!!!chang data!!!!!!!!!!
-	Voxel_2d find_circle(int init_cw);//2345 wsad
+	Voxel_2d find_circle(int init_cw, int print_flag = 0);//2345 wsad
 //between 2 circle in the same layer
 	vector<neighbor_point4> find_neighbor(Voxel_2d tar, int cw);
 //between 2 layers
@@ -60,6 +60,7 @@ public:
 //other function
 	Voxel_2d circle_reverse();
 	int count_type(int type);
+	bool check_2d();
 };
 
 class Voxel_3d

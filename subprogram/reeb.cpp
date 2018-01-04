@@ -79,7 +79,13 @@ vector<Voxel_2d> reeb_graph::find_circle()
 	{
 		for(int j=0;j<node_2d[i].size();j++)
 		{
-			circle_vec.push_back(node_2d[i][j].find_circle(cw));
+			Voxel_2d tmp_circle = node_2d[i][j].find_circle(cw);
+			if(tmp_circle.check_2d() == false)
+			{
+				cout<<i<<" "<<j<<" "<<node_no[i][j]<<endl;
+				node_2d[i][j].find_circle(cw, 1);
+			}
+			circle_vec.push_back(tmp_circle);
 		}
 		cw = 4 - cw;
 	}

@@ -302,7 +302,7 @@ void Voxel_2d::add_circle(Voxel_2d tar)
 				_data[i][j] = tar._data[i][j];
 }
 
-Voxel_2d Voxel_2d::find_circle(int init_cw)
+Voxel_2d Voxel_2d::find_circle(int init_cw, int print_flag)
 {
 	Voxel_2d res(_data);
 	Voxel_2d rest = res;
@@ -319,8 +319,9 @@ Voxel_2d Voxel_2d::find_circle(int init_cw)
 		rest = rest.substract(tmp_edge);
 	}
 	//debug print
-	for(int i=0;i<edge_circle_vec.size();i++)
-		edge_circle_vec[i].print();
+	if(print_flag)
+		for(int i=0;i<edge_circle_vec.size();i++)
+			edge_circle_vec[i].print();
 	//merge circle
 	res = res.substract(res);
 	res.add_circle(edge_circle_vec[0]);
@@ -451,6 +452,35 @@ int Voxel_2d::count_type(int type)
 				res++;
 		}
 	return res;
+}
+
+bool Voxel_2d::check_2d()
+{
+	const int dx[6] = {1,0,-1,0,0,0};
+	const int dy[6] = {0,1,0,-1,0,0};
+	int current_x = 0, current_y = 0;
+	int exist_num = 0;
+	for(int i=0;i<_data.size();i++)
+		for(int j=0;j<_data[i].size();j++)
+			if(_data[i][j] > VOXEL_3D_EXIST)
+			{
+				exist_num++;
+				current_x = i;
+				current_y = j;
+			}
+	int st_x = current_x;
+	int st_y = current_y;
+	while(exist_num)
+	{
+		exist_num--;
+		if(_data[current_x][current_y] <= VOXEL_3D_EXIST)
+			return false;
+		int next_x = current_x + dx[_data[current_x][current_y]-2];
+		int next_y = current_y + dy[_data[current_x][current_y]-2];
+		current_x = next_x;
+		current_y = next_y;
+	}
+	return true;
 }
 
 Voxel_2d Voxel_2d::circle_reverse()
