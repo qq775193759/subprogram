@@ -1,51 +1,32 @@
-﻿生成启动时间为 2018/1/4 11:38:40。
+﻿生成启动时间为 2018/1/5 14:00:10。
      1>项目“C:\Users\yezp13\Documents\GitHub\subprogram\subprogram\subprogram.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt graph3d.cpp
-         graph3d.cpp
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(13): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(15): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(29): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(30): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(75): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(76): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(106): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(116): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(117): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(125): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(126): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(167): warning C4018: “>=”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(168): warning C4018: “>=”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(186): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(187): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(206): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(207): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(221): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(222): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(230): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(231): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(268): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(269): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(299): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(300): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(316): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(323): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(329): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(364): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(365): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(392): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(393): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(404): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(405): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(419): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(420): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(448): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(449): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(463): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(464): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(494): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(495): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\users\yezp13\documents\github\subprogram\subprogram\graph3d.cpp(524): warning C4018: “<”: 有符号/无符号不匹配
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt reeb.cpp
+         reeb.cpp
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(9): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(14): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(22): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(24): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(26): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(43): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(44): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(60): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(62): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(68): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(78): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(80): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(96): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(120): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(124): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(140): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(141): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(142): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(186): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(189): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(191): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(209): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(210): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\users\yezp13\documents\github\subprogram\subprogram\reeb.cpp(211): warning C4018: “<”: 有符号/无符号不匹配
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\yezp13\Documents\GitHub\subprogram\Debug\subprogram.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\yezp13\Documents\GitHub\subprogram\Debug\subprogram.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\yezp13\Documents\GitHub\subprogram\Debug\subprogram.lib" /MACHINE:X86 Debug\subprogram.res
          Debug\graph3d.obj
@@ -56,4 +37,4 @@
 
 生成成功。
 
-已用时间 00:00:03.11
+已用时间 00:00:02.65

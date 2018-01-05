@@ -104,6 +104,12 @@ vector<Voxel_2d> reeb_graph::find_circle()
 				circle_vec[edge[i].second-1] = circle_vec[edge[i].second-1].circle_reverse();
 				vector<neighbor_point4> tmp_neighbor_vec = 
 				circle_vec[edge[i].first-1].find_layer_connection(circle_vec[edge[i].second-1]);
+				if(tmp_neighbor_vec.size() == 0)
+				{
+					cout<<edge[i].first<<" "<<edge[i].second<<endl;
+					circle_vec[edge[i].first-1].print();
+					circle_vec[edge[i].second-1].print();
+				}
 				//cout<<"reverse : "<<tmp_neighbor_vec.size()<<endl;
 				circle_vec[edge[i].first-1].add_up_and_down(circle_vec[edge[i].second-1], tmp_neighbor_vec[0]);
 			}
@@ -159,6 +165,7 @@ void reeb_graph::check_whole_circle()
 		current_x = next_x;
 		current_y = next_y;
 		current_z = next_z;
+		//cout<<current_x<<" "<<current_y<<" "<<current_z<<endl;
 	}
 	if((current_x == st_x) &&(current_y == st_y)&&(current_z == st_z))
 		cout<<"check OK"<<endl;

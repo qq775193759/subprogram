@@ -1,4 +1,7 @@
 voxel/Armadillo_y.txt 0
-voxel/Brac_z.txt 1
+voxel/Brac_z.txt 0
+voxel/plane_y.txt 0
+voxel/elephant_y.txt 0
+voxel/deer_y.txt 1
 voxel/test.txt 0
 
